@@ -1,15 +1,8 @@
 ---
-/**
- * Navbar.astro
- * Responsive navigation component for the photography studio website.
- * Props:
- *  - navItems: Array<{
- *      name: string;
- *      link: string;
- *      options?: { name: string; link: string }[];
- *    }>
- */
- interface SubOption {
+// components/NavBar.astro
+import { NAV_ITEMS } from "../data/index.js";
+
+interface SubOption {
   name: string;
   link: string;
 }
@@ -18,125 +11,153 @@ interface NavItem {
   link: string;
   options?: SubOption[];
 }
-const { navItems = [] } = Astro.props;
+const items: NavItem[] = NAV_ITEMS;
 ---
 
-<nav id="site-navbar" class="bg-white shadow-md w-full sticky top-0 z-50 transition-transform duration-300">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between h-16 items-center">
-      <!-- Logo / Brand -->
-      <a href="/" class="text-2xl font-extrabold tracking-tight text-gray-900">Studio</a>
+<!--
+  - Checkbox invisible + "peer" controla el overlay móvil.
+  - En móbil el panel cubre toda la pantalla por debajo de la barra (top‑16).
+  - Animación: se desliza de arriba a abajo con translate‑y.
+  - Para debug rápido, primero mostramos/ocultamos con hidden/block; cuando funcione añade la animación.
+-->
+<nav class="bg-white shadow-md sticky top-0 z-50">
+  <!-- Checkbox PEER -->
+  <input id="nav-toggle" type="checkbox" class="peer sr-only" />
 
-      <!-- Desktop menu -->
-      <ul class="hidden lg:flex space-x-8">
-        {navItems.map((item: NavItem) => (
-          item.options && item.options.length > 0 ? (
-            <li class="relative group">
-              <a href={item.link} class="text-gray-700 hover:text-[#e7ae17] font-medium flex items-center gap-1">
-                {item.name}
-                <svg class="w-4 h-4 transition-transform duration-200 group-hover:-rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+  <!-- Barra superior (contenedor logo + burger + menú desktop) -->
+  <div
+    class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+  >
+    <!-- Logo -->
+    <a href="/" class="text-2xl font-extrabold tracking-tight">Studio</a>
+
+    <!-- Burger button (label) -->
+    <label
+      for="nav-toggle"
+      class="lg:hidden p-2 cursor-pointer"
+      aria-label="Abrir o cerrar menú"
+    >
+      <span
+        class="block w-7 h-px bg-gray-900 transition
+                   before:content-[''] before:block before:w-7 before:h-px before:bg-gray-900
+                   after:content-[''] after:block after:w-7 after:h-px after:bg-gray-900
+                   before:-translate-y-[6px] after:translate-y-[5px]
+                   peer-checked:rotate-45 peer-checked:before:rotate-90 peer-checked:before:translate-y-0 peer-checked:after:opacity-0"
+      ></span>
+    </label>
+
+    <!-- Menú desktop -->
+    <ul class="hidden lg:flex space-x-8">
+      {
+        items.map((item) => (
+          <li class="relative group">
+            <a
+              href={item.link}
+              class="font-medium hover:text-[#e7ae17] flex items-center gap-1"
+            >
+              {item.name}
+              {item.options && (
+                <svg
+                  class="w-4 h-4 transition-transform group-hover:-rotate-180"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
-              </a>
-              <!-- Sub‑menu -->
+              )}
+            </a>
+            {item.options && (
               <ul class="absolute left-0 top-full w-48 rounded-lg bg-white shadow-lg opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity duration-200">
                 {item.options.map((sub) => (
                   <li>
-                    <a href={sub.link} class="block px-4 py-2 text-sm text-gray-700 hover:text-[#e7ae17] hover:bg-gray-100 rounded-md">
+                    <a
+                      href={sub.link}
+                      class="block px-4 py-2 text-sm hover:text-[#e7ae17] hover:bg-gray-100"
+                    >
                       {sub.name}
                     </a>
                   </li>
                 ))}
               </ul>
-            </li>
-          ) : (
-            <li>
-              <a href={item.link} class="text-gray-700 hover:text-[#e7ae17] font-medium">
-                {item.name}
-              </a>
-            </li>
-          )
-        ))}
-      </ul>
-
-      <!-- Mobile burger → X button -->
-      <button id="menu-toggle" class="lg:hidden flex items-center p-2 focus:outline-none" aria-label="Toggle navigation">
-        <!-- Burger icon -->
-        <svg id="menu-open" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-        <!-- Close (X) icon -->
-        <svg id="menu-close" class="w-7 h-7 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-    </div>
+            )}
+          </li>
+        ))
+      }
+    </ul>
   </div>
 
-  <!-- Mobile menu panel -->
-  <div id="mobile-menu" class="lg:hidden hidden border-t border-gray-200 bg-white">
-    <ul class="px-4 py-4 space-y-2">
-      {navItems.map((item: NavItem) => (
-        item.options && item.options.length > 0 ? (
+  <!-- Panel móvil overlay -->
+  <div
+    class="lg:hidden fixed inset-x-0 top-16 bottom-0 z-40 bg-white overflow-y-auto
+           hidden peer-checked:block"
+  >
+    <ul class="px-6 py-8 space-y-4">
+      {
+        items.map((item) => (
           <li>
-            <details class="group">
-              <summary class="flex justify-between items-center cursor-pointer py-2 list-none">
-                <span class="font-medium text-gray-700">{item.name}</span>
-                <svg class="w-4 h-4 transition-transform duration-200 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              </summary>
-              <ul class="pl-4 mt-2 border-l border-gray-200 space-y-1">
-                {item.options.map((sub) => (
-                  <li>
-                    <a href={sub.link} class="block py-1 text-gray-600 hover:text-[#e7ae17]">{sub.name}</a>
-                  </li>
-                ))}
-              </ul>
-            </details>
+            {item.options ? (
+              <details class="group">
+                <summary class="flex justify-between items-center cursor-pointer py-2 text-lg">
+                  {item.name}
+                  <svg
+                    class="w-4 h-4 transition-transform group-open:rotate-180"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </summary>
+                <ul class="pl-4 mt-2 border-l border-gray-200 space-y-1">
+                  {item.options.map((sub) => (
+                    <li>
+                      <a
+                        href={sub.link}
+                        class="block py-1 hover:text-[#e7ae17]"
+                      >
+                        {sub.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            ) : (
+              <a
+                href={item.link}
+                class="block py-2 text-lg hover:text-[#e7ae17]"
+              >
+                {item.name}
+              </a>
+            )}
           </li>
-        ) : (
-          <li>
-            <a href={item.link} class="block py-2 font-medium text-gray-700 hover:text-[#e7ae17]">
-              {item.name}
-            </a>
-          </li>
-        )
-      ))}
+        ))
+      }
     </ul>
   </div>
 </nav>
 
-<!-- Client‑side interactivity -->
-<script is:inline>
-  const toggle = document.getElementById('menu-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
-  const openIcon = document.getElementById('menu-open');
-  const closeIcon = document.getElementById('menu-close');
-
-  /* Mobile burger toggle */
-  toggle?.addEventListener('click', () => {
-    const isHidden = mobileMenu.classList.toggle('hidden');
-    openIcon.classList.toggle('hidden');
-    closeIcon.classList.toggle('hidden');
-
-    // smooth slide‑down / slide‑up using max‑height trick
-    if (!isHidden) {
-      mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
-    } else {
-      mobileMenu.style.maxHeight = '0px';
-    }
-  });
-</script>
-
 <style is:global>
-/* Smooth collapsible mobile panel */
-#mobile-menu {
-  overflow: hidden;
-  max-height: 0px;
-  transition: max-height 0.3s ease;
-}
-#mobile-menu:not(.hidden) {
-  max-height: 100vh; /* large enough */
-}
+  /* Burger icon cross animation */
+  label > span {
+    position: relative;
+  }
+  label > span::before,
+  label > span::after {
+    position: absolute;
+    left: 0;
+    transition:
+      transform 0.3s,
+      opacity 0.3s;
+  }
 </style>

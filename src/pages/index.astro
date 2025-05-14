@@ -1,7 +1,76 @@
 ---
+import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
+import hero from "../assets/home/main.jpg";
 ---
 
 <Layout>
-  <h1>Sexy syx head</h1>
+  <section id="hero" class="relative mt-16 h-[150vh] w-full overflow-hidden">
+    <Image
+      src={hero}
+      alt="Vista del estudio fotográfico"
+      widths={[640, 1024, 1280, 1536, 1920, 2560]}
+      sizes="100vw"
+      quality={92}
+      loading="eager"
+      class="absolute inset-0 w-full h-full object-cover object-center"
+    />
+
+    <!-- Sentinel centrado verticalmente -->
+    <div
+      id="hero-sentinel"
+      class="absolute left-0 w-full h-px"
+      style="top: 66%;"
+    >
+    </div>
+
+    <!-- Overlay -->
+    <div
+      id="hero-text"
+      class="absolute inset-0 flex flex-col items-center justify-center text-center
+                opacity-0 transition-opacity duration-700 pointer-events-none"
+    >
+      <h1 class="text-5xl md:text-7xl font-extrabold text-white drop-shadow-md">
+        SYX&nbsp;ESTUDIO
+      </h1>
+      <p class="mt-4 text-xl md:text-2xl text-white drop-shadow-sm">
+        Tu alquiler de estudio en Vallecas
+      </p>
+      <a
+        href="/contacto"
+        class="mt-8 inline-block bg-[#e7ae17] text-white font-semibold px-6 py-3
+                rounded-lg shadow-lg hover:bg-[#c9960f] transition-colors pointer-events-auto"
+      >
+        Reserva tu fecha
+      </a>
+    </div>
+  </section>
+
+  <section class="prose prose-lg mx-auto px-4 py-20 text-gray-700">
+    <h2>Lorem ipsum</h2>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi…
+    </p>
+    <p>
+      Vivamus vehicula, turpis eget condimentum imperdiet, mauris orci pretium
+      enim…
+    </p>
+  </section>
+
+  <script is:inline>
+    const sentinel = document.getElementById("hero-sentinel");
+    const heroText = document.getElementById("hero-text");
+
+    const observer = new IntersectionObserver(
+      ([entry], obs) => {
+        if (entry.isIntersecting) {
+          heroText.classList.add("opacity-100");
+          obs.disconnect(); // se muestra solo una vez
+        }
+      },
+      { threshold: 0 } // basta 1 px del sentinel en viewport
+    );
+
+    observer.observe(sentinel);
+  </script>
 </Layout>
