@@ -53,7 +53,7 @@ const items: NavItem[] = NAV_ITEMS;
           <li class="relative group">
             <a
               href={item.link}
-              class="font-medium hover:text-[#e7ae17] flex items-center gap-1"
+              class="font-medium hover:text-primary flex items-center gap-1"
             >
               {item.name}
               {item.options && (
@@ -78,7 +78,7 @@ const items: NavItem[] = NAV_ITEMS;
                   <li>
                     <a
                       href={sub.link}
-                      class="block px-4 py-2 text-sm hover:text-[#e7ae17] hover:bg-gray-100"
+                      class="block px-4 py-2 text-sm hover:text-primary hover:bg-gray-100"
                     >
                       {sub.name}
                     </a>
@@ -122,10 +122,7 @@ const items: NavItem[] = NAV_ITEMS;
                 <ul class="pl-4 mt-2 border-l border-gray-200 space-y-1">
                   {item.options.map((sub) => (
                     <li>
-                      <a
-                        href={sub.link}
-                        class="block py-1 hover:text-[#e7ae17]"
-                      >
+                      <a href={sub.link} class="block py-1 hover:text-primary">
                         {sub.name}
                       </a>
                     </li>
@@ -133,10 +130,7 @@ const items: NavItem[] = NAV_ITEMS;
                 </ul>
               </details>
             ) : (
-              <a
-                href={item.link}
-                class="block py-2 text-lg hover:text-[#e7ae17]"
-              >
+              <a href={item.link} class="block py-2 text-lg hover:text-primary">
                 {item.name}
               </a>
             )}
