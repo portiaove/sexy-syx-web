@@ -1,0 +1,77 @@
+---
+import { Image } from "astro:assets";
+import euLogo from "../assets/footer/EU_next_generation.png";
+---
+
+<footer class="bg-black text-white text-sm">
+  <!-- Top row ------------------------------------------------------------->
+  <div
+    class="mx-auto max-w-screen-xl px-4 py-8 flex flex-col
+   gap-8 md:flex-row md:justify-between md:items-start"
+  >
+    <!-- 1 · Contact -->
+    <ul class="space-y-3">
+      <li class="flex items-center gap-2">
+        <span>📞</span>
+        <a href="tel:+34666849365" class="hover:text-primary">666 849 365</a>
+      </li>
+      <li class="flex items-center gap-2">
+        <span>✉️</span>
+        <a href="mailto:syxestudio@gmail.com" class="hover:text-primary">
+          syxestudio@gmail.com
+        </a>
+      </li>
+      <li class="flex items-center gap-2">
+        <span>💬</span>
+        <a
+          href="https://wa.me/34666849365"
+          target="_blank"
+          rel="noopener"
+          class="hover:text-primary"
+        >
+          WhatsApp
+        </a>
+      </li>
+    </ul>
+
+    <!-- 2 · Legal links -->
+    <ul class="space-y-3 md:text-center">
+      <li><a href="/aviso-legal" class="hover:text-primary">Aviso Legal</a></li>
+      <li>
+        <a href="/politica-privacidad" class="hover:text-primary"
+          >Política de Privacidad</a
+        >
+      </li>
+      <li>
+        <a href="/cookies" class="hover:text-primary">Política de Cookies</a>
+      </li>
+      <li>
+        <a href="/accesibilidad" class="hover:text-primary"
+          >Declaración de Accesibilidad</a
+        >
+      </li>
+    </ul>
+
+    <!-- 3 · EU logo (Astro Image) -->
+    <figure class="flex justify-center md:justify-end">
+      <Image
+        src={euLogo}
+        alt="Financiado por la Unión Europea · NextGenerationEU"
+        widths={[160, 240, 320]}
+        sizes="160px"
+        loading="lazy"
+        class="w-40"
+      />
+    </figure>
+  </div>
+
+  <!-- Bottom row ---------------------------------------------------------->
+  <div class="text-center py-6 text-xs tracking-wide">
+    © <span id="cpy-year"></span>&nbsp;ARLESSON ESTUDIO SL · Todos los derechos
+    reservados
+  </div>
+
+  <script is:inline>
+    document.getElementById("cpy-year").textContent = new Date().getFullYear();
+  </script>
+</footer>

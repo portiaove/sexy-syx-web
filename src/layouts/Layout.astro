@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import NavBar from "../components/NavBar.astro";
+import Footer from "../components/Footer.astro";
 import { NAV_ITEMS } from "../data/index.js";
 ---
 
@@ -16,5 +17,6 @@ import { NAV_ITEMS } from "../data/index.js";
   <body>
     <NavBar navItems={NAV_ITEMS} />
     <slot />
+    <Footer />
   </body>
 </html>

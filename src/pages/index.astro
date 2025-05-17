@@ -2,16 +2,29 @@
 import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
 import hero from "../assets/home/main.jpg";
+
+/* SEO */
+const pageTitle =
+  "Alquiler de plató audiovisual y estudio fotográfico en Madrid | SYX Estudio";
+const pageDescription =
+  "Plató audiovisual en Vallecas con luz natural controlada, acceso vehículos, cocina, camerino y estudio NET ZERO. Reserva tu espacio profesional para foto y vídeo.";
 ---
 
 <Layout>
+  <Fragment slot="head">
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href="https://www.syxestudio.es/" />
+  </Fragment>
+
+  <!-- HERO -->
   <section
     id="hero"
     class="relative mt-16 h-[110vh] md:h-[150vh] w-full overflow-hidden"
   >
     <Image
       src={hero}
-      alt="Vista del estudio fotográfico"
+      alt="Interior del plató de SYX Estudio"
       widths={[640, 1024, 1280, 1536, 1920, 2560]}
       sizes="100vw"
       quality={92}
@@ -19,51 +32,76 @@ import hero from "../assets/home/main.jpg";
       class="absolute inset-0 w-full h-full object-cover object-center"
     />
 
-    <!-- Sentinel: 80 % en móvil · 66 % en desktop -->
     <div
       id="hero-sentinel"
       class="absolute left-0 w-full h-px top-[80%] md:top-[66%]"
     >
     </div>
 
-    <!-- Overlay -->
     <div
       id="hero-text"
       class="absolute inset-0 flex flex-col items-center justify-center text-center
-             opacity-0 transition-opacity duration-700 pointer-events-none"
+                opacity-0 transition-opacity duration-700 pointer-events-none"
     >
-      <h1 class="text-5xl md:text-7xl font-extrabold text-white drop-shadow-md">
+      <span
+        class="text-5xl md:text-7xl font-extrabold text-white drop-shadow-md"
+      >
         SYX&nbsp;ESTUDIO
-      </h1>
+      </span>
       <p class="mt-4 text-xl md:text-2xl text-white drop-shadow-sm">
         Tu alquiler de estudio en Vallecas
       </p>
-
-      <!-- Botón con dorado translúcido -->
       <a
         href="/contacto"
         class="mt-8 inline-block bg-primary/90 text-white font-semibold
-               px-6 py-3 rounded-lg shadow-lg hover:bg-primary/70
-               transition-colors pointer-events-auto"
+                px-6 py-3 rounded-sm shadow-lg hover:bg-primary/70
+                transition-colors pointer-events-auto"
       >
         Reserva tu fecha
       </a>
     </div>
   </section>
 
-  <!-- CONTENIDO DEMO ----------------------------------------------------->
-  <section class="prose prose-lg mx-auto px-4 py-20 text-gray-700">
-    <h2>Lorem ipsum</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit…</p>
-    <p>Vivamus vehicula, turpis eget condimentum imperdiet…</p>
+  <section
+    class="mx-auto max-w-[70ch] my-12 px-4 md:px-8 lg:px-12
+           space-y-6 text-gray-700 leading-relaxed"
+  >
+    <h1 class="text-primary text-3xl md:text-4xl font-bold">
+      Alquiler de plató audiovisual en Vallecas, Madrid
+    </h1>
+
+    <p>
+      Plató audiovisual en Madrid disponible para alquiler y diseñado
+      especialmente para producciones de foto y vídeo. Contamos con luz natural
+      controlada, un espacio amplio y adaptable, y entrada para vehículos, ideal
+      para facilitar la carga y descarga de equipos. Además, ofrecemos material
+      de iluminación <strong>PROFOTO</strong>, fondos de tela pintados y
+      diversas opciones de localizaciones dentro del plató.
+    </p>
+
+    <p>
+      Nuestro espacio incluye cocina, camerino y está completamente adaptado
+      para personas con movilidad reducida. Tenemos placas fotovoltaicas para
+      autoconsumo, con el fin de mejorar la sostenibilidad de tus producciones. <span
+        class="font-semibold">Somos un estudio NET ZERO.</span
+      >
+    </p>
+
+    <p>
+      Si buscas un entorno versátil, accesible y profesional para tu próxima
+      producción en Madrid,
+      <a href="/contacto" class="text-primary hover:underline font-semibold">
+        ¡reserva nuestro plató audiovisual hoy!
+      </a>
+    </p>
   </section>
 
-  <!-- INTERSECTION OBSERVER --------------------------------------------->
+  <!-- INTERSECTION OBSERVER -->
   <script is:inline>
     const sentinel = document.getElementById("hero-sentinel");
     const heroText = document.getElementById("hero-text");
 
-    const observer = new IntersectionObserver(
+    new IntersectionObserver(
       ([entry], obs) => {
         if (entry.isIntersecting) {
           heroText.classList.add("opacity-100");
@@ -71,8 +109,6 @@ import hero from "../assets/home/main.jpg";
         }
       },
       { threshold: 0 }
-    );
-
-    observer.observe(sentinel);
+    ).observe(sentinel);
   </script>
 </Layout>
